@@ -22,7 +22,7 @@ export function createMultiBindingStore(
     }
 
     /**
-     * @param keys string list to let store know which state to return
+     * @param keys string array to let store know which parts of state to return
      */
     function getState(keys?: string[]): any {
         let neededState: any;
