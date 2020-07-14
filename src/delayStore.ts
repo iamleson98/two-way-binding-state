@@ -2,9 +2,10 @@ import { DelayStoreReturn, Reducer, AsyncStoreDispatchParam } from './type';
 import { timer, Observable, Subscription } from 'rxjs';
 
 
-const timerObservable = timer(0);
+// const timerObservable = timer(0);
 
-export function createDelayStore(reducer: Reducer, initialState: any, timer: Observable<number> = timerObservable): DelayStoreReturn {
+export function createDelayStore(reducer: Reducer, initialState: any, timeout: number = 0): DelayStoreReturn {
+    const timerObsv = timer(Math.abs(timeout));
     let state: any = initialState;
     let subscription: Subscription;
 
@@ -25,7 +26,7 @@ export function createDelayStore(reducer: Reducer, initialState: any, timer: Obs
     }
 
     function dispatch({ type, value, setStateCalback, options }: AsyncStoreDispatchParam): void {
-        subscription = timer.subscribe(() => {
+        subscription = timerObsv.subscribe(() => {
             const { success, result } = reducer(state, { type, value, options });
             if (success) {
                 state = result;
